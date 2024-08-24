@@ -8,8 +8,8 @@
 - [ ] Partial Application
 - [ ] Memorize
 - [ ] Monads
-  - [ ] Try
-  - [ ] Either
+  - [x] Try
+  - [x] Either
   - [ ] Option
   - [ ] IO
 

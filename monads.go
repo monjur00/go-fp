@@ -7,6 +7,7 @@ type (
 
 	BindFn[T any] func(T) Monad[T]
 
+	// TODO: Bind with Monad generic interface
 	Try[T any] struct {
 		Result T
 		Err    error
@@ -23,9 +24,9 @@ type (
 	}
 )
 
-func (t Try[T]) Bind(b BindFn[T]) Monad[T] {
+func (t Try[T]) Bind(b func(T) Try[T]) Try[T] {
 	if t.Err != nil {
-		return &Try[T]{t.Result, t.Err}
+		return Try[T]{t.Result, t.Err}
 	}
 
 	return b(t.Result)
@@ -39,9 +40,9 @@ func NewEither[R any](r R, l error) Either[R] {
 	return Either[R]{r, l}
 }
 
-func (e Either[R]) Bind(b BindFn[R]) Monad[R] {
+func (e Either[R]) Bind(b func(R) Either[R]) Either[R] {
 	if e.Left != nil {
-		return &Either[R]{e.Right, e.Left}
+		return Either[R]{e.Right, e.Left}
 	}
 
 	return b(e.Right)
