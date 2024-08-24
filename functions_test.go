@@ -1,6 +1,7 @@
 package gofp
 
 import (
+	"strconv"
 	"strings"
 	"testing"
 
@@ -40,5 +41,19 @@ func Test_Filter(t *testing.T) {
 		o := Filter(input, func(i int) bool { return i < 0 })
 
 		assert.Equal(t, []int{-3, -2, -1}, o)
+	})
+}
+
+func Test_Reduce(t *testing.T) {
+	input := []int{1, 2, 3, 4, 5}
+
+	t.Run("sum numbers", func(t *testing.T) {
+		o := Reduce(input, 0, func(a, b int) int { return a + b })
+		assert.Equal(t, 15, o)
+	})
+
+	t.Run("concat string", func(t *testing.T) {
+		o := Reduce(input, "", func(a string, b int) string { return a + "," + strconv.Itoa(b) })
+		assert.Equal(t, ",1,2,3,4,5", o)
 	})
 }
